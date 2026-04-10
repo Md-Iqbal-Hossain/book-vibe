@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
+import { BookContext } from '../../context/BookContext';
 
 // const booksPromise = fetch('/booksData.json')
 //     .then(res => res.json());
@@ -7,17 +8,18 @@ import { useLoaderData, useParams } from 'react-router';
 
 const BookDetails = () => {
     const { bookId:bookParamsId } = useParams();
-    console.log(typeof bookParamsId);
+    
 
     // const books = use(booksPromise);
 
     const books = useLoaderData()
-    console.log(books);
+    // console.log(books);
     const expectedBooks = books.find(book => book.bookId == Number(bookParamsId));
-    console.log(expectedBooks);
+    // console.log(expectedBooks);
 
     const {bookId, bookName, author, image, review, totalPages, rating, category, tags, publisher, yearOfPublishing} = expectedBooks;
 
+    const {handleMarkAsRead, handleWishList} = useContext(BookContext);
 
 
     return (
@@ -48,8 +50,8 @@ const BookDetails = () => {
                         <span>Publish Time: </span><span>{yearOfPublishing}</span>
                     </div>
                     <div className='flex items-center gap-2'>
-                        <button className="btn">Read</button>
-                        <button className="btn btn-primary">Wishlist</button>
+                        <button onClick={() => handleMarkAsRead(expectedBooks)} className="btn">Mark as Read</button>
+                        <button onClick={() => handleWishList(expectedBooks)} className="btn btn-primary">Add to Wishlist</button>
                     </div>
                 </div>
             </div>
